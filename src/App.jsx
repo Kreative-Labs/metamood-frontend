@@ -1,3 +1,5 @@
+import { Space } from "./components/Space";
+
 function App() {
   return (
     <div
@@ -9,6 +11,7 @@ function App() {
         justifyContent: "center",
       }}
     >
+      <Space />
       <h1 style={{ color: "white", fontFamily:"'Press Start 2P'", padding:"32px 0" }}>Meta Mood</h1>
     </div>
   );
