@@ -13,30 +13,38 @@ function App() {
       name: "Arousal",
       value: 0.5,
     },
-    {
-      name: "Dominance",
-      value: 0.5,
-    },
   ]);
   const [mood, setMood] = useState("Neutral");
   useEffect(() => {
     const getData = async () => {
-      const moodData = await axios.get("http://127.0.0.1:5000/mood");
+      const data = await axios.get("http://127.0.0.1:5000/mood");
+      console.log(data);
+      const valence = JSON.parse(data.data)[0];
+      const dominance = JSON.parse(data.data)[1];
+      const arousal = JSON.parse(data.data)[2];
+      let mood;
+      if (valence < 0.5 && arousal < 0.5) mood = "Depressed / Bored / Tired";
+      else if (valence >= 0.5 && arousal < 0.5) mood = "Calm / Relaxed";
+      else if (valence < 0.5 && arousal > 0.5)
+        mood = "Angry / Tensed / Frustated";
+      else if (valence >= 0.5 && arousal >= 0.5)
+        mood = "Happy / Excited / Delighted";
+      else mood = "Netural";
       setData([
         {
           name: "Valence",
-          value: JSON.parse(moodData.data.data)[0],
+          value: valence,
         },
         {
           name: "Arousal",
-          value: JSON.parse(moodData.data.data)[2],
+          value: arousal,
         },
-        {
-          name: "Dominance",
-          value: JSON.parse(moodData.data.data)[1],
-        },
+        // {
+        //   name: "Dominance",
+        //   value: dominance,
+        // },
       ]);
-      setMood(moodData.data.mood)
+      setMood(mood);
     };
     getData();
   }, []);
